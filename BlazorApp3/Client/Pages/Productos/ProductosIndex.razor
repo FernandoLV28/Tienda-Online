@@ -1,0 +1,68 @@
+﻿@page "/productos"
+@using BlazorApp3.Shared.Modelo
+@inject HttpClient http
+@inject NavigationManager navegar
+
+<h1>Lista de Productos</h1>
+
+<button class="btn btn-primary" @onclick="Agregar"><span class="oi oi-plus"></span>Nuevo Producto</button>
+
+@if (losProductos == null)
+{
+    <h4>Cargando datos...</h4>
+}
+else if (losProductos.Count == 0)
+{
+    <h4>No existen productos registrados</h4>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Precio</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var elProducto in losProductos)
+            {
+                <tr>
+                    <td>@elProducto.Nombre</td>
+                    <td>@elProducto.Descripcion</td>
+                    <td>@elProducto.Precio</td>
+                    <td>
+                        <button class="btn btn-sm" @onclick="()=>Editar(elProducto.Id)">Editar</button>
+                        <button class="btn btn-sm" @onclick="()=>Eliminar(elProducto)">Eliminar</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+@code {
+    private List<Producto> losProductos;
+
+    protected override async Task OnInitializedAsync()
+    {
+        losProductos = await http.GetFromJsonAsync<List<Producto>>("api/productos");
+    }
+
+    private void Agregar()
+    {
+        navegar.NavigateTo("productos/nuevo");
+    }
+
+    private void Editar(int id)
+    {
+        navegar.NavigateTo($"/productos/editar/{id}");
+    }
+
+    private async Task Eliminar(Producto unProducto)
+    {
+        await http.DeleteAsync($"api/productos/{unProducto.Id}");
+        losProductos.Remove(unProducto);
+    }
+}

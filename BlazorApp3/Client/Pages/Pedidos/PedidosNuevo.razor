@@ -1,0 +1,39 @@
+﻿@page "/pedidos/nuevo"
+@using BlazorApp3.Shared.Modelo
+@inject HttpClient http
+@inject NavigationManager navegar
+
+<h3>Nuevo Pedido</h3>
+<EditForm Model="elPedido" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator />
+    <div class="mb-3">
+        <label for="txtFecha" class="form-label">Fecha</label>
+        <InputDate id="txtFecha" class="form-control" @bind-Value="elPedido.Fecha" />
+        <ValidationMessage For="(()=>elPedido.Fecha)" />
+    </div>
+
+    <div class="mb-3">
+        <label for="txtTotal" class="form-label">Total</label>
+        <InputNumber id="txtTotal" class="form-control" @bind-Value="elPedido.Total" />
+        <ValidationMessage For="(()=>elPedido.Total)" />
+    </div>
+
+    <div class="mb-3">
+        <label for="txtClienteId" class="form-label">Id del Cliente</label>
+        <InputNumber id="txtClienteId" class="form-control" @bind-Value="elPedido.ClientesId" />
+        <ValidationMessage For="(()=>elPedido.ClientesId)" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar</button>
+
+</EditForm>
+
+@code {
+    private Pedido elPedido = new Pedido();
+
+    private async void Guardar()
+    {
+        await http.PostAsJsonAsync("api/pedidos", elPedido);
+        navegar.NavigateTo("/pedidos");
+    }
+}

@@ -1,0 +1,48 @@
+﻿@page "/productos/editar/{Id:int}"
+@using BlazorApp3.Shared.Modelo
+@inject HttpClient http
+@inject NavigationManager navegar
+
+<h3>Editar Producto</h3>
+
+<EditForm Model="elProducto" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator />
+    <div class="mb-3">
+        <label for="txtNombre" class="form-label">Nombre</label>
+        <InputText id="txtNombre" class="form-control" @bind-Value="elProducto.Nombre" />
+        <ValidationMessage For="(()=>elProducto.Nombre)" />
+    </div>
+
+    <div class="mb-3">
+        <label for="txtDescripcion" class="form-label">Descripcion</label>
+        <InputText id="txtDescripcion" class="form-control" @bind-Value="elProducto.Descripcion" />
+        <ValidationMessage For="(()=>elProducto.Descripcion)" />
+    </div>
+
+    <div class="mb-3">
+        <label for="txtPrecio" class="form-label">Precio</label>
+        <InputText id="txtPrecio" class="form-control" @bind-Value="elProducto.Precio" />
+        <ValidationMessage For="(()=>elProducto.Precio)" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar</button>
+
+</EditForm>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    private Producto elProducto = new Producto();
+
+    protected override async Task OnInitializedAsync()
+    {
+        elProducto = await http.GetFromJsonAsync<Producto>($"api/productos/{Id}");
+    }
+
+
+    private async void Guardar()
+    {
+        await http.PutAsJsonAsync($"api/productos/{Id}", elProducto);
+        navegar.NavigateTo("/productos");
+    }
+}

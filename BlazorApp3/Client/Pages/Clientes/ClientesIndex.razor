@@ -1,0 +1,70 @@
+﻿@page "/clientes"
+@using BlazorApp3.Shared.Modelo
+@inject HttpClient http
+@inject NavigationManager navegar
+
+<h1>Lista de Clientes</h1>
+
+<button class="btn btn-primary" @onclick = "Agregar"><span class="oi oi-plus"></span>Nuevo Cliente</button>
+
+@if(losClientes == null)
+{
+    <h4>Cargando datos...</h4>
+}
+else if (losClientes.Count == 0 )
+{
+    <h4>No existen clientes registrados</h4>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Dirección</th>
+                <th>Telefono</th>
+                <th>Correo</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var elCliente in losClientes)
+            {
+                <tr>
+                    <td>@elCliente.Nombre</td>
+                    <td>@elCliente.Direccion</td>
+                    <td>@elCliente.Telefono</td>
+                    <td>@elCliente.Correo</td>
+                    <td>
+                        <button class="btn btn-sm" @onclick="()=>Editar(elCliente.Id)">Editar</button>
+                        <button class="btn btn-sm" @onclick="()=>Eliminar(elCliente)">Eliminar</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+@code {
+    private List<Cliente> losClientes;
+
+    protected override async Task OnInitializedAsync()
+    {
+        losClientes = await http.GetFromJsonAsync<List<Cliente>>("api/clientes");
+    }
+
+    private void Agregar()
+    {
+        navegar.NavigateTo("clientes/nuevo"); 
+    }
+
+    private void Editar(int id)
+    {
+        navegar.NavigateTo($"/clientes/editar/{id}");
+    }
+
+    private async Task Eliminar(Cliente unCliente)
+    {
+        await http.DeleteAsync($"api/clientes/{unCliente.Id}");
+        losClientes.Remove(unCliente);
+    }
+}
