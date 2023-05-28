@@ -20,8 +20,17 @@
 
     <div class="mb-3">
         <label for="txtClienteId" class="form-label">Id del Cliente</label>
-        <InputNumber id="txtClienteId" class="form-control" @bind-Value="elPedido.ClientesId" />
-        <ValidationMessage For="(()=>elPedido.ClientesId)" />
+        <InputNumber id="txtClienteId" class="form-control" @bind-Value="elPedido.ClienteId" />
+        <ValidationMessage For="(()=>elPedido.ClienteId)" />
+    </div>
+
+    <div class="mb-3">
+        <label for="txtPago" class="form-label">Método de pago</label>
+        <InputRadioGroup @bind-Value="elPedido.Metodo_Pago">
+                <label><InputRadio Value="1"></InputRadio>Tarjeta</label>
+                <label><InputRadio Value="2"></InputRadio>Efectivo</label>
+        </InputRadioGroup>
+        <ValidationMessage For="(()=>elPedido.Metodo_Pago)" />
     </div>
 
     <button type="submit" class="btn btn-primary">Guardar</button>

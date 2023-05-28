@@ -63,18 +63,21 @@ namespace BlazorApp3.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ClientesId")
+                    b.Property<int>("ClienteId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("datetime2");
 
-                    b.Property<double>("total")
+                    b.Property<int>("Metodo_Pago")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Total")
                         .HasColumnType("float");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClientesId");
+                    b.HasIndex("ClienteId");
 
                     b.ToTable("Pedidos");
                 });
@@ -116,7 +119,7 @@ namespace BlazorApp3.Server.Migrations
                 {
                     b.HasOne("BlazorApp3.Shared.Modelo.Cliente", "Clientes")
                         .WithMany("Pedidos")
-                        .HasForeignKey("ClientesId")
+                        .HasForeignKey("ClienteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

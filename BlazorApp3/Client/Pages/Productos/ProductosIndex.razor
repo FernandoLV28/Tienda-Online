@@ -10,6 +10,9 @@
 @if (losProductos == null)
 {
     <h4>Cargando datos...</h4>
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
 }
 else if (losProductos.Count == 0)
 {

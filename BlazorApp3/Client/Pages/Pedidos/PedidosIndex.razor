@@ -10,6 +10,9 @@
 @if (losPedidos == null)
 {
     <h4>Cargando datos...</h4>
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
 }
 else if (losPedidos.Count == 0)
 {
@@ -22,7 +25,8 @@ else
             <tr>
                 <th>Fecha</th>
                 <th>Total</th>
-                <th>Id del Cliente</th>
+                <th>Id del cliente</th>
+                <th>Método de pago</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -32,7 +36,8 @@ else
                 <tr>
                     <td>@elPedido.Fecha</td>
                     <td>@elPedido.Total</td>
-                    <td>@elPedido.ClientesId</td>
+                    <td>@elPedido.ClienteId</td>
+                    <td>@((elPedido.Metodo_Pago == 1) ? "Tarjeta" : "Efectivo")</td>
                     <td>
                         <button class="btn btn-sm" @onclick="()=>Editar(elPedido.Id)">Editar</button>
                         <button class="btn btn-sm" @onclick="()=>Eliminar(elPedido)">Eliminar</button>

@@ -11,15 +11,14 @@ namespace BlazorApp3.Shared.Modelo
     public class Pedido
     {
         public int Id { get; set; }
-        [Required(ErrorMessage ="La fecha no puede ser vacio")]
+        [Required(ErrorMessage ="La fecha es obligatoria")]
         public DateTime Fecha { get; set; }
 
         public double Total { get; set; }
 
-        public int ClientesId { get; set; }
-
-        public virtual Cliente? Clientes { get; set; }
-        public virtual ICollection<Producto>? Productos { get; set; }
+        public int ClienteId { get; set; }
+        [Required, Range (1,2, ErrorMessage ="Debe seleccionar método de pago")]
+        public int Metodo_Pago { get; set; }
 
     }
 }

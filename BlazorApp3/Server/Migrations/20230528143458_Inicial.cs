@@ -35,14 +35,15 @@ namespace BlazorApp3.Server.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Total = table.Column<double>(type: "float", nullable: false),
-                    ClientesId = table.Column<int>(type: "int", nullable: false)
+                    ClienteId = table.Column<int>(type: "int", nullable: false),
+                    Metodo_Pago = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Pedidos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Pedidos_Clientes_ClientesId",
-                        column: x => x.ClientesId,
+                        name: "FK_Pedidos_Clientes_ClienteId",
+                        column: x => x.ClienteId,
                         principalTable: "Clientes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -70,9 +71,9 @@ namespace BlazorApp3.Server.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Pedidos_ClientesId",
+                name: "IX_Pedidos_ClienteId",
                 table: "Pedidos",
-                column: "ClientesId");
+                column: "ClienteId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Productos_PedidosId",
